@@ -4,6 +4,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 public class Main {
     public static void main(String[] args) {
-        new AnnotationConfigApplicationContext(Config.class);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+        PrintAction printAction = context.getBean(PrintAction.class);
+        printAction.run("Hello World!");
     }
 }
