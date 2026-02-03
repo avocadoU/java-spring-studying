@@ -10,12 +10,22 @@ public class PrintAction {
 
     private PrintService printService;
 
+    private String message;
+
     @Autowired
-    public PrintAction(@Qualifier("consolePrintService")PrintService printService) {
+    public PrintAction(@Qualifier("consolePrintService") PrintService printService) {
         this.printService = printService;
     }
 
-    public void run(String message) {
+    public void addMessage(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void run() {
         printService.print(message);
     }
 }
