@@ -7,6 +7,6 @@ public class Main {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
         PrintAction printAction = context.getBean(PrintAction.class);
         printAction.addMessage("Hello World!");
-        printAction.run();
+        // printAction.run();   при запуске выдаст сразу два сообщения
     }
 }
