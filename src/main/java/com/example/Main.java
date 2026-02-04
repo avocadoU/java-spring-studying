@@ -1,9 +1,11 @@
 package com.example;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class Main {
     public static void main(String[] args) {
-        new AnnotationConfigApplicationContext(Config.class);
+        SpringApplication.run(Main.class, args);
     }
 }
