@@ -6,11 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.List;
 
 @SpringBootTest
 @Transactional
@@ -18,41 +16,34 @@ public class UserRepositoryTest {
 
     private UserRepository userRepository;
 
+    private User user;
+
     @Autowired
     public UserRepositoryTest(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    private User createUser() {
+    @BeforeEach
+    public void createUser() {
         String userName = UUID.randomUUID().toString();
         String userLastName = UUID.randomUUID().toString();
         String userPassword = UUID.randomUUID().toString();
 
-        User user = new User(userName, userLastName, userPassword);
+        user = new User(userName, userLastName, userPassword);
         userRepository.save(user);
-
-        return user;
     }
 
     @Test
-    void findByNameTest() {
-        User user = createUser();
+    void findByNameOrLastNameTest() {
+        List<User> foundUsers = userRepository.findByNameOrLastName(user.getName(), null);
+        assertFoundUser(foundUsers);
 
-        User foundUser = userRepository.findByName(user.getName()).get(0);
-
-        Assertions.assertNotNull(foundUser);
-        Assertions.assertEquals(user.getId(), foundUser.getId());
-        Assertions.assertEquals(user.getName(), foundUser.getName());
+        foundUsers = userRepository.findByNameOrLastName(null, user.getLastName());
+        assertFoundUser(foundUsers);
     }
 
-    @Test
-    void findByLastName() {
-        User user = createUser();
-
-        User foundUser = userRepository.findByLastName(user.getLastName()).get(0);
-
-        Assertions.assertNotNull(foundUser);
-        Assertions.assertEquals(user.getId(), foundUser.getId());
-        Assertions.assertEquals(user.getLastName(), foundUser.getLastName());
+    private void assertFoundUser(List<User> foundUsers) {
+        Assertions.assertNotNull(foundUsers);
+        Assertions.assertEquals(user.getId(), foundUsers.get(0).getId());
     }
 }
